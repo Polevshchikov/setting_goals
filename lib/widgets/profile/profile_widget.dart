@@ -1,7 +1,42 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:setting_goals/services/services.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   const ProfileWidget({Key? key}) : super(key: key);
+
+  @override
+  _ProfileWidgetState createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  late User? user;
+  @override
+  void initState() {
+    super.initState();
+    user = getIt.get<Services>().auth.currentUser;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ProfileBodyWidget(
+      userEmail: user!.email ?? 'Почта пользователя',
+      userName: user!.displayName ?? 'Имя пользователя',
+    );
+  }
+}
+
+class ProfileBodyWidget extends StatelessWidget {
+  final userName;
+  // final userSurname;
+  final String userEmail;
+
+  const ProfileBodyWidget({
+    Key? key,
+    required this.userName,
+    // this.userSurname = 'Фамилия пользователя',
+    required this.userEmail,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +54,8 @@ class ProfileWidget extends StatelessWidget {
         elevation: 10,
         actions: [
           IconButton(
-            onPressed: () {
-              print('exit');
+            onPressed: () async {
+              await getIt.get<Services>().auth.signOut();
             },
             icon: Icon(Icons.exit_to_app),
             color: Colors.black,
@@ -55,15 +90,20 @@ class ProfileWidget extends StatelessWidget {
               backgroundColor: Colors.transparent,
               radius: 50,
             ),
-            Text('Name'),
-            Text('Surname'),
-            Text('Email'),
+            Text('Имя пользователя'),
+            Text('Фамилия пользователя'),
+            Text(userEmail),
             ElevatedButton(
               onPressed: () {},
               child: Text('Изменить пароль'),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                await getIt
+                    .get<Services>()
+                    .auth
+                    .updateUser(displayName: 'displayName');
+              },
               child: Text('Редактировать личные данные'),
             ),
             Container(

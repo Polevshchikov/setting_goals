@@ -18,6 +18,25 @@ class _GlobalWidgetState extends State<GlobalWidget> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
+      // onGenerateRoute: (settings) {
+      //   final argument = settings.arguments;
+
+      //   if (settings.name == '/') {
+      //     return MaterialPageRoute(
+      //       builder: (context) => const ProfilePage(),
+      //     );
+      //   }
+
+      //   if (settings.name == '/schedulePage') {
+      //     return MaterialPageRoute(
+      //       builder: (context) => SchedulePage(scheduleModel: argument as ScheduleModel),
+      //     );
+      //   }
+
+      //   return null;
+      // },
+
       home: BlocProvider(
         create: (_) => GlobalStateCubit(),
         child: BlocBuilder<GlobalStateCubit, GlobalState>(

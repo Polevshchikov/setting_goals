@@ -49,16 +49,21 @@ class AuthServiceCubit extends Cubit<User?> {
   }) async {
     var authResult = await firebaseAuth.createUserWithEmailAndPassword(
         email: email.trim(), password: password);
-
     checkVerification(authResult.user);
   }
 
   /// Обновить пользователя
-  Future<void> updateUser(
-      {required String displayName, required String photoURL}) async {
+  Future<void> updatePassword({required String newPassword}) async {
     if (currentUser != null) {
       var _user = currentUser!;
-      await _user.updatePhotoURL(photoURL);
+      await _user.updatePassword(newPassword);
+    }
+  }
+
+  /// Обновить пользователя
+  Future<void> updateUser({required String displayName}) async {
+    if (currentUser != null) {
+      var _user = currentUser!;
       await _user.updateDisplayName(displayName);
     }
   }

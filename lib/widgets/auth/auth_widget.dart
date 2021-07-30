@@ -90,9 +90,19 @@ class _AuthWidgetState extends State<AuthWidget> {
             Container(
               width: double.infinity,
               height: double.infinity,
-              color: _formType == FormType.login
-                  ? Colors.greenAccent
-                  : Colors.blueAccent,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      _formType == FormType.login
+                          ? Color(0xFF009688)
+                          : Colors.blueAccent,
+                      Color.fromARGB(255, 245, 255, 255)
+                    ],
+                    begin: const FractionalOffset(0.0, 1.0),
+                    end: const FractionalOffset(1.0, 0.0),
+                    stops: [0.0, 0.9],
+                    tileMode: TileMode.clamp),
+              ),
             ),
             Positioned(
               left: 30,

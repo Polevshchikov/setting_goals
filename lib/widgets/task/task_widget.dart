@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:setting_goals/widgets/task/components/done_widget.dart';
+import 'package:setting_goals/widgets/task/components/inProgress_widget.dart';
+import 'package:setting_goals/widgets/task/components/testing_widget.dart';
+import 'package:setting_goals/widgets/task/components/todo_widget.dart';
 
 class TaskWidget extends StatelessWidget {
   const TaskWidget({Key? key}) : super(key: key);
@@ -41,15 +45,10 @@ class TaskWidget extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Container(
-              color: Colors.green,
-              child: Center(
-                child: Text('Домашняя страница'),
-              ),
-            ),
-            Icon(Icons.directions_car),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
+            ToDoWidget(),
+            InProgressWidget(),
+            TestingWidget(),
+            DoneWidget(),
           ],
         ),
       ),

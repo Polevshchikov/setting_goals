@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:setting_goals/services/services.dart';
 import 'package:setting_goals/widgets/auth/elements/auth_button.dart';
 import 'package:setting_goals/widgets/auth/elements/auth_form.dart';
 import 'package:setting_goals/widgets/auth/elements/form_enum.dart';
-import 'package:setting_goals/widgets/navigation/navigation_widget.dart';
 
 class BodyWidget extends StatefulWidget {
   final FormType formType;
@@ -55,12 +55,35 @@ class _BodyWidgetState extends State<BodyWidget> {
 
   //  Метод проверяющий валидацию ввода данных и в случае успеха переходим на страницу
   void _signIn() async {
+    final _email = widget.controllerEmail.text.trim();
+    final _password = widget.controllerPassword.text.trim();
     if (formKey.currentState!.validate()) {
-      formKey.currentState?.reset();
-      setState(() {
-        _permissionMove = !_permissionMove;
-      });
-    } else {}
+      if (widget.formType == FormType.login) {
+        try {
+          formKey.currentState!.save();
+          await getIt.get<Services>().auth.signInByEmailAndPassword(
+                email: _email,
+                password: _password,
+              );
+        } catch (err) {
+          print(err);
+        }
+      } else {
+        final _name = widget.controllerName.text;
+        final _surname = widget.controllerSurname.text;
+        try {
+          formKey.currentState!.save();
+          if (_email.isEmpty || _password.isEmpty) return;
+          await getIt.get<Services>().auth.signUpByEmailAndPassword(
+                email: _email,
+                password: _password,
+              );
+          formKey.currentState?.reset();
+        } catch (err) {
+          print(err);
+        }
+      }
+    }
   }
 
   List<Widget> displayWidgets({List<Widget>? listWidgets}) {
@@ -106,10 +129,10 @@ class _BodyWidgetState extends State<BodyWidget> {
           elevation: 15,
           // color: Color.fromRGBO(255, 255, 255, 1),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48.0),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Form(
               key: formKey,
               child: Column(
@@ -142,15 +165,6 @@ class _BodyWidgetState extends State<BodyWidget> {
                     formType: widget.formType,
                     onPressed: () {
                       _signIn();
-                      if (_permissionMove) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                NavigationWidget(),
-                          ),
-                        );
-                      }
                     },
                   ),
                 ],
