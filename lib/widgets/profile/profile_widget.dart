@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:setting_goals/services/services.dart';
+import 'package:setting_goals/widgets/profile/components/edit_password_widget.dart';
+import 'package:setting_goals/widgets/profile/components/edit_profile_widget.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -94,15 +96,26 @@ class ProfileBodyWidget extends StatelessWidget {
             Text('Фамилия пользователя'),
             Text(userEmail),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                //  TODO  изменить на именнованный роут
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return EditPasswordWidget();
+                  }),
+                );
+              },
               child: Text('Изменить пароль'),
             ),
             ElevatedButton(
-              onPressed: () async {
-                await getIt
-                    .get<Services>()
-                    .auth
-                    .updateUser(displayName: 'displayName');
+              onPressed: () {
+                //  TODO  изменить на именнованный роут
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return EditProfileWidget();
+                  }),
+                );
               },
               child: Text('Редактировать личные данные'),
             ),
